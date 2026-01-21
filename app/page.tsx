@@ -1,4 +1,29 @@
-export default function Home() {
+export default async function Home() {
+  // Fetch Pokemon IDs from 1 to 30
+  const pokemonIds = Array.from({ length: 30 }, (_, i) => i + 1);
+
+  // Create array of promises, each one fetches one Pokemon
+  const pokemonPromises = pokemonIds.map(async (id) => {
+    const res = await fetch(`https://pokeapi.co/api/v2/pokemon/${id}`, {
+      // Optional: cache for better performance in development/production
+      next: { revalidate: 3600 }, // revalidate every hour (or use 0 for SSR every request)
+    });
+
+    if (!res.ok) {
+      throw new Error('Failed to fetch Pokémon #${id}')
+    }
+
+    return res.json();
+  });
+
+  // Wait for all fetches to complete
+  let pokemons = [];
+  try {
+    pokemons = await Promise.all(pokemonPromises);
+  } catch (error) {
+    console.error(error);
+  }
+
   return (
     <div className="min-h-screen bg-zinc-50 dark:bg-black flex flex-col items-center pt-16 px-4">
       <div className="text-center w-full max-w-5xl">
@@ -14,38 +39,25 @@ export default function Home() {
             001-030
           </h3>
 
-          <div className="grid grid-cols-6 auto-rows-[100px] mt-8">
-            <div>01</div>
-            <div>02</div>
-            <div>03</div>
-            <div>04</div>
-            <div>05</div>
-            <div>06</div>
-            <div>07</div>
-            <div>08</div>
-            <div>09</div>
-            <div>10</div>
-            <div>11</div>
-            <div>12</div>
-            <div>13</div>
-            <div>14</div>
-            <div>15</div>
-            <div>16</div>
-            <div>17</div>
-            <div>18</div>
-            <div>19</div>
-            <div>20</div>
-            <div>21</div>
-            <div>22</div>
-            <div>23</div>
-            <div>24</div>
-            <div>25</div>
-            <div>26</div>
-            <div>27</div>
-            <div>28</div>
-            <div>29</div>
-            <div>30</div>
-        </div>
+          <div className="grid grid-cols-6 auto-rows-[100px] mt-4">
+            {pokemons.map((pokemon) => (
+              <div
+                key={pokemon.id}
+                className="border border-gray-200 dark:border-gray-700 rounded-lg flex flex-col items-center justify-center bg-white dark:bg-gray-900 hover:shadow-md transition-shadow"
+              >
+                <img
+                  src={pokemon.sprites.front_default}
+                  alt={pokemon.name}
+                  width="80"
+                  height="80"
+                />
+                <p>{pokemon.name}
+                </p>
+                <p>#{pokemon.id.toString().padStart(3, "0")}
+                </p>
+              </div>
+            ))}
+          </div>
         </div>
       </div>
     </div>
