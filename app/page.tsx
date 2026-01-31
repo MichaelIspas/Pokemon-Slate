@@ -1,8 +1,9 @@
 import PokemonCard from '@/components/pokemoncard'
+import RegionFilter from '@/components/regionfilter'
 
 export default async function Home() {
-  // Fetch Pokemon IDs from 1 to 30
-  const pokemonIds = Array.from({ length: 30 }, (_, i) => i + 1);
+  // Fetch Pokemon IDs from 1 to 1025
+  const pokemonIds = Array.from({ length: 1025 }, (_, i) => i + 1);
 
   // Create array of promises, each promise fetches one Pokemon
   const pokemonPromises = pokemonIds.map(async (id) => {
@@ -33,11 +34,9 @@ export default async function Home() {
 
       <div className="text-left w-full max-w-5xl">
         <h2 className="mt-6 text-2xl font-semibold text-gray-800 dark:text-gray-200 md:text-3xl">
-          Generation 1
+          <RegionFilter
+          />
         </h2>
-          <h3 className="mt-6 text-2xl font-semibold text-gray-800 dark:text-gray-200 md:text-3xl">
-            001-030
-          </h3>
 
           <div className="grid grid-cols-6 auto-rows-[140px] mt-4">
             {pokemons.map((pokemon) => (
