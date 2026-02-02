@@ -1,9 +1,24 @@
 import PokemonCard from '@/components/pokemoncard'
+import RegionFilter from '@/components/regionfilter'
 
-export default async function Home() {
-  // Fetch Pokemon IDs from 1 to 30
-  const pokemonIds = Array.from({ length: 30 }, (_, i) => i + 1);
+export default async function Home({ searchParams }: { searchParams: { region?: string } }) {  
+  const params = await searchParams;
+  
+  // Decide range based on region selection
+  // Default = National (1-1025 and counting)
+  let start = 1
+  let end = 1025
 
+  if (params.region === 'kanto') {
+    end = 151
+  } else if (params.region === 'johto') {
+    start = 152
+    end = 251
+  }
+  
+  // Fetch Pokemon IDs from 1 to 1025
+  const pokemonIds = Array.from({ length: end - start + 1 }, (_, i) => start + i);
+  
   // Create array of promises, each promise fetches one Pokemon
   const pokemonPromises = pokemonIds.map(async (id) => {
     const res = await fetch(`https://pokeapi.co/api/v2/pokemon/${id}`, {
@@ -31,24 +46,19 @@ export default async function Home() {
           Pokémon Slate
         </h1>
 
-      <div className="text-left w-full max-w-5xl">
-        <h2 className="mt-6 text-2xl font-semibold text-gray-800 dark:text-gray-200 md:text-3xl">
-          Generation 1
-        </h2>
-          <h3 className="mt-6 text-2xl font-semibold text-gray-800 dark:text-gray-200 md:text-3xl">
-            001-030
-          </h3>
+        <div className="text-left w-full max-w-5xl">
+          <RegionFilter currentRegion={params.region} />
 
           <div className="grid grid-cols-6 auto-rows-[140px] mt-4">
             {pokemons.map((pokemon) => (
               <PokemonCard 
                 key={pokemon.id} 
                 pokemon={pokemon} 
-              />
-            ))}
+            />
+          ))}
           </div>
         </div>
       </div>
     </div>
-  );
+  )
 }
