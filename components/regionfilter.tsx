@@ -1,56 +1,83 @@
 'use client'
 
-import { useState } from 'react'
+import { useRouter, usePathname, useSearchParams } from 'next/navigation'
 
-interface RegionFilterProps {
-    onRegionClick?: (region: 'Kanto' | 'Johto' | null) => void;
-}
+export default function RegionFilter({ currentRegion }: { currentRegion?: string }) {
+    const router = useRouter()
+    const pathname = usePathname()
+    const searchParams = useSearchParams()
 
-export default function RegionFilter({ onRegionClick }: RegionFilterProps = {}) {
-    const [activeRegion, setActiveRegion] = useState<'Kanto' | 'Johto' | null>(null);
+    const activeRegion = currentRegion || 'national'
 
-    const handleClick = (region: 'Kanto' | 'Johto') => {
-        const newActive = activeRegion === region ? null : region;
-        setActiveRegion(newActive);
-        onRegionClick?.(newActive);
+    const handleClick = (region: string | null) => {
+        const params = new URLSearchParams(searchParams.toString())
 
-        console.log('Region toggled →', newActive || 'All regions');
-    };
+        if (region) {
+            params.set('region', region)
+        } else {
+            params.delete('region')
+        }
+
+        router.replace(`${pathname}?${params.toString()}`, { scroll: false })
+    }
+
+    const isActive = (r: string) => activeRegion === r
 
     return (
-        <div className="mt-6 flex flex-wrap items-end gap-8 md:gap-12">            
+        <div className="mt-6 flex flex-wrap items-end gap-8 md:gap-12">
+            {/* National */}
+            <h2
+                className={`
+                text-2xl font-semibold cursor-pointer transition-colors
+                ${isActive('national')
+                    ? 'text-red-600 dark:text-red-400 underline underline-offset-4'
+                    : 'text-red-800 hover:text-red-600 dark:text-gray-200 dark:hover:text-red-400'}
+                md:text-3xl
+            `}
+                onClick={() => handleClick(null)}
+            >
+                National
+                <br />
+                <span className="text-xl font-medium text-gray-600 dark:text-yellow-400 md:text-2xl">
+                    001-1025
+                </span>
+            </h2>
+         
             {/* Kanto */}
             <h2
                 className={`
                     text-2xl font-semibold cursor-pointer transition-colors
-                    ${activeRegion === 'Kanto'
+                    ${isActive('kanto')
                     ? 'text-yellow-600 dark:text-yellow-400 underline underline-offset-4'
                     : 'text-yellow-800 hover:text-yellow-600 dark:text-gray-200 dark:hover:text-yellow-400'}
                 md:text-3xl
             `}
-                onClick={() => handleClick('Kanto')}
+                onClick={() => handleClick('kanto')}
             >
-                Kanto {activeRegion === 'Kanto' ? '✓' : ''}
-                <span className="text-xl font-medium text-yellow-600 dark:text-yellow-400 md:text-2xl">
+                Kanto
+                <span className="text-xl font-medium text-gray-600 dark:text-yellow-400 md:text-2xl">
+                    <br/>
                     001-151
                 </span>
             </h2>
 
+            {/* Johto */}
             <h2
                 className={`
                         mt-6 text-2xl font-semibold cursor-pointer transition-colors whitespace-nowrap
-                        ${activeRegion === 'Johto'
-                        ? 'text-blue-400 dark:text-blue-300 underline underline-offset-4'  // stronger active
-                        : 'text-gray-800 hover:text-blue-400 dark:text-gray-200 dark:hover:text-blue-300'}
+                        ${isActive('johto')
+                        ? 'text-blue-400 dark:text-blue-300 underline underline-offset-4'  
+                        : 'text-blue-800 hover:text-blue-400 dark:text-blue-200 dark:hover:text-blue-300'}
                 md:text-3xl
             `}
-                onClick={() => handleClick('Johto')}
+                onClick={() => handleClick('johto')}
             >
-                Johto {activeRegion === 'Johto' ? '✓' : ''}
-                <span className="text-xl font-medium text-blue-400 dark:text-blue-400 md:text-2xl">
+                Johto
+                <span className="text-xl font-medium text-gray-600 dark:text-yellow-400 md:text-2xl">
+                    <br/>
                     152-251
                 </span>
             </h2>
             </div>
-    );
+    )
 }
