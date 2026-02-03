@@ -10,10 +10,31 @@ export default async function Home({ searchParams }: { searchParams: { region?: 
   let end = 1025
 
   if (params.region === 'kanto') {
-    end = 151
+    end = 151;
   } else if (params.region === 'johto') {
-    start = 152
-    end = 251
+    start = 152;
+    end = 251;
+  } else if (params.region === 'hoenn') {
+    start = 252;
+    end = 386;
+  } else if (params.region === 'sinnoh') {
+    start = 387;
+    end = 493;
+  } else if (params.region === 'unova') {
+    start = 494;
+    end = 649;
+  } else if (params.region === 'kalos') {
+    start = 650;
+    end = 721;
+  } else if (params.region === 'alola') {
+    start = 722;
+    end = 809;
+  } else if (params.region === 'galar') {
+    start = 810;
+    end = 905;
+  } else if (params.region === 'paldea') {
+    start = 906;
+    end = 1025;
   }
   
   // Fetch Pokemon IDs from 1 to 1025
@@ -22,6 +43,7 @@ export default async function Home({ searchParams }: { searchParams: { region?: 
   // Create array of promises, each promise fetches one Pokemon
   const pokemonPromises = pokemonIds.map(async (id) => {
     const res = await fetch(`https://pokeapi.co/api/v2/pokemon/${id}`, {
+    cache: 'force-cache'
     });
 
     if (!res.ok) {
