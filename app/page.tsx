@@ -1,5 +1,7 @@
 // app/page.tsx
 import Link from 'next/link';
+import { login, signup } from '@/app/login/actions'
+
 
 export default function Home() {
     return (
@@ -10,11 +12,21 @@ export default function Home() {
             </h1>
 
             <p>Your Ultimate Pokedex Monitor.</p>
-            <p>Keep track of every single Pokémon you attain throughout your journey as a Pokémon master.</p>
+            <p>Keep track of every single Pokémon you attain throughout your journey as a Pokémon Master.</p>
             
             <p>
-                <Link href="/pokedex">Check out your Pokédex</Link>
+                <Link href="/pokedex">View your Pokédex</Link>
             </p>
+            
+            {/* Email and password fields */}
+            <form method="post">
+                <label htmlFor="email">Email:</label>
+                <input id="email" name="email" type="email" required />
+                <label htmlFor="password">Password:</label>
+                <input id="password" name="password" type="password" required />
+                <button formAction={login}>Log in</button>
+                <button formAction={signup}>Sign up</button>
+            </form>
             </div>
         </main>
     );

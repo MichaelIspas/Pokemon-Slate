@@ -17,6 +17,12 @@ export default function AccountForm({ user }: { user: User | null }) {
                 <button type="submit" className="w-full py-3 bg-red-600 text-white rounded hover:bg-red-700">
                     Sign out
                 </button>
+            
+            <form action="/" method="post"></form>
+                <button type="submit" className="w-full py-3 bg-blue-600
+                text-white rounded hover:bg-blue-700">
+                    Return to Home
+                </button>
             </form>
         </div>
     )
