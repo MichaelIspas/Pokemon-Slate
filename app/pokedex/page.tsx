@@ -64,13 +64,17 @@ export default async function Pokedex({ searchParams }: { searchParams: { region
 
   return (
     <div className="min-h-screen bg-zinc-50 dark:bg-black flex flex-col items-center pt-16 px-4">
-      <div className="text-center w-full max-w-5xl">
+      <div className="text-left w-full max-w-5xl">
         <h1 className="text-5xl font-bold text-black dark:text-white md:text-6xl">
           Pokémon Slate
         </h1>
         <h2>
           <p>
-            <Link href="/">Back to Home</Link>
+            <Link href="/">
+              <button className="inline-block py-1 px-5 bg-yellow-600 text-white rounded hover:bg-yellow-700 text-3xl md:text-1xl font-bold tracking-tight">                
+                Home
+              </button>
+            </Link>
           </p>
         </h2>
 
