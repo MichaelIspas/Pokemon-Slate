@@ -1,4 +1,6 @@
 // app/page.tsx
+
+import Link from 'next/link'
 import { login, signup } from '@/app/login/actions'
 import { type User } from '@supabase/supabase-js'
 import { createClient } from '@/lib/supabase/server'
@@ -18,7 +20,7 @@ export default async function Home({ user }: { user: User | null }) {
             <p>Keep track of every single Pokémon you attain throughout your journey as a Pokémon Master.</p>
 
             <p className="mt-8 text-xl">
-                Welcome back:
+                Welcome USER:
                 <input
                     type="text"
                     value={currentUser.email || ''}
@@ -27,6 +29,24 @@ export default async function Home({ user }: { user: User | null }) {
                 />
                     </p>
                 </div>
+
+                <Link href="/pokedex">
+                    <button className="w-32 py-3 bg-yellow-600 text-white rounded hover:bg-yellow-700 mt-8">
+                        Pokédex
+                    </button>
+                </Link>
+
+            <form action="/account" method="post">
+                <button type="submit" className="w-32 py-3 bg-blue-600 text-white rounded hover:bg-blue-700 mt-4">
+                    Account
+                </button>
+            </form>
+
+                <form action="/auth/signout" method="post">
+                    <button type="submit" className="w-32 py-3 bg-red-600 text-white rounded hover:bg-red-700 mt-4">
+                        Sign out
+                    </button>
+                </form>
             </main>
         )
     }
