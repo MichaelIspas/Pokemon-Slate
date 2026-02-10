@@ -5,16 +5,19 @@ import { type User } from '@supabase/supabase-js'
 import { createClient } from '@/lib/supabase/server'
 
 export default async function Pokedex({ user, searchParams }: { user: User; searchParams: { region?: string } }) {  
-  const params = await searchParams;
+  const params = await searchParams || 'kanto';
   const supabase = await createClient()
   const { data: { user: currentUser } } = await supabase.auth.getUser()
   
   // Decide range based on region selection
-  // Default = National (1-1025 and counting)
+  // Default = Kanto
   let start = 1
   let end = 1025
 
-  if (params.region === 'kanto') {
+  if (params.region === 'national') {
+    end = 1025
+  } else if (params.region === 'kanto') {
+    start = 1;
     end = 151;
   } else if (params.region === 'johto') {
     start = 152;
