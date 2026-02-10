@@ -1,7 +1,6 @@
 import type { Metadata } from "next";
 import { Geist, Geist_Mono } from "next/font/google";
 import "@/app/globals.css"
-import Home from './page'
 
 const geistSans = Geist({
   variable: "--font-geist-sans",
@@ -15,7 +14,7 @@ const geistMono = Geist_Mono({
 
 export const metadata: Metadata = {
   title: "Pokémon Slate - Your Ultimate Pokedex Monitor",
-  description: "Keep track of every single Pokémon you attain throughout your journey as a Pokémon master. ",
+  description: "Keep track of every single Pokémon you attain throughout your journey as a Pokémon Master. ",
 };
 
 export default function RootLayout({

@@ -1,9 +1,13 @@
 import PokemonCard from '@/components/pokemoncard'
 import RegionFilter from '@/components/regionfilter'
 import Link from 'next/link'
+import { type User } from '@supabase/supabase-js'
+import { createClient } from '@/lib/supabase/server'
 
-export default async function Pokedex({ searchParams }: { searchParams: { region?: string } }) {  
+export default async function Pokedex({ user, searchParams }: { user: User; searchParams: { region?: string } }) {  
   const params = await searchParams;
+  const supabase = await createClient()
+  const { data: { user: currentUser } } = await supabase.auth.getUser()
   
   // Decide range based on region selection
   // Default = National (1-1025 and counting)
@@ -62,6 +66,7 @@ export default async function Pokedex({ searchParams }: { searchParams: { region
     console.error(error);
   }
 
+  if (currentUser) {
   return (
     <div className="min-h-screen bg-zinc-50 dark:bg-black flex flex-col items-center pt-16 px-4">
       <div className="text-left w-full max-w-5xl">
@@ -85,7 +90,8 @@ export default async function Pokedex({ searchParams }: { searchParams: { region
             {pokemons.map((pokemon) => (
               <PokemonCard 
                 key={pokemon.id} 
-                pokemon={pokemon} 
+                pokemon={pokemon}
+                user={currentUser}
             />
           ))}
           </div>
@@ -93,4 +99,5 @@ export default async function Pokedex({ searchParams }: { searchParams: { region
       </div>
     </div>
   )
+}
 }
