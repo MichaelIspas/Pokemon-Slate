@@ -14,7 +14,7 @@ const geistMono = Geist_Mono({
 
 export const metadata: Metadata = {
   title: "Pokémon Slate - Your Ultimate Pokedex Monitor",
-  description: "Keep track of every single Pokémon you attain throughout your journey as a Pokémon master. ",
+  description: "Keep track of every single Pokémon you attain throughout your journey as a Pokémon Master. ",
 };
 
 export default function RootLayout({

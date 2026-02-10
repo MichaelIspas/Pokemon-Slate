@@ -1,86 +1,76 @@
-import PokemonCard from '@/components/pokemoncard'
-import RegionFilter from '@/components/regionfilter'
+// app/page.tsx
 
-export default async function Home({ searchParams }: { searchParams: { region?: string } }) {  
-  const params = await searchParams;
-  
-  // Decide range based on region selection
-  // Default = National (1-1025 and counting)
-  let start = 1
-  let end = 1025
+import Link from 'next/link'
+import { login, signup } from '@/app/login/actions'
+import { type User } from '@supabase/supabase-js'
+import { createClient } from '@/lib/supabase/server'
 
-  if (params.region === 'kanto') {
-    end = 151;
-  } else if (params.region === 'johto') {
-    start = 152;
-    end = 251;
-  } else if (params.region === 'hoenn') {
-    start = 252;
-    end = 386;
-  } else if (params.region === 'sinnoh') {
-    start = 387;
-    end = 493;
-  } else if (params.region === 'unova') {
-    start = 494;
-    end = 649;
-  } else if (params.region === 'kalos') {
-    start = 650;
-    end = 721;
-  } else if (params.region === 'alola') {
-    start = 722;
-    end = 809;
-  } else if (params.region === 'galar') {
-    start = 810;
-    end = 905;
-  } else if (params.region === 'paldea') {
-    start = 906;
-    end = 1025;
-  }
-  
-  // Fetch Pokemon IDs from 1 to 1025
-  const pokemonIds = Array.from({ length: end - start + 1 }, (_, i) => start + i);
-  
-  // Create array of promises, each promise fetches one Pokemon
-  const pokemonPromises = pokemonIds.map(async (id) => {
-    const res = await fetch(`https://pokeapi.co/api/v2/pokemon/${id}`, {
-    cache: 'force-cache'
-    });
+export default async function Home({ user }: { user: User | null }) {    
+    const supabase = await createClient()
+    const { data: { user: currentUser } } = await supabase.auth.getUser()
 
-    if (!res.ok) {
-      throw new Error('Failed to fetch Pokémon #${id}')
+    if (currentUser){
+    return (
+        <main className="min-h-screen bg-zinc-50 dark:bg-black flex flex-col items-center justify-center px-6 text-center">
+            <div className="max-w-4xl mx-auto space-y-6">
+                <h1 className="text-5xl md:text-7xl font-extrabold text-black dark:text-white tracking-tight">
+                    Pokémon Slate
+            </h1>
+            <p>Your Ultimate Pokedex Monitor.</p>
+            <p>Keep track of every single Pokémon you attain throughout your journey as a Pokémon Master.</p>
+
+            <p className="mt-8 text-xl">
+                Welcome USER:
+                <input
+                    type="text"
+                    value={currentUser.email || ''}
+                    disabled
+                    className="ml-2 w-auto p-3 border rounded bg-gray-100"
+                />
+                    </p>
+                </div>
+
+                <Link href="/pokedex">
+                    <button className="w-32 py-3 bg-yellow-600 text-white rounded hover:bg-yellow-700 mt-8">
+                        Pokédex
+                    </button>
+                </Link>
+
+            <form action="/account" method="post">
+                <button type="submit" className="w-32 py-3 bg-blue-600 text-white rounded hover:bg-blue-700 mt-4">
+                    Account
+                </button>
+            </form>
+
+                <form action="/auth/signout" method="post">
+                    <button type="submit" className="w-32 py-3 bg-red-600 text-white rounded hover:bg-red-700 mt-4">
+                        Sign out
+                    </button>
+                </form>
+            </main>
+        )
     }
 
-    return res.json();
-  });
-
-  // Wait for all fetches to complete
-  let pokemons = [];
-  try {
-    pokemons = await Promise.all(pokemonPromises);
-  } catch (error) {
-    console.error(error);
-  }
-
-  return (
-    <div className="min-h-screen bg-zinc-50 dark:bg-black flex flex-col items-center pt-16 px-4">
-      <div className="text-center w-full max-w-5xl">
-        <h1 className="text-5xl font-bold text-black dark:text-white md:text-6xl">
-          Pokémon Slate
-        </h1>
-
-        <div className="text-left w-full max-w-5xl">
-          <RegionFilter currentRegion={params.region} />
-
-          <div className="grid grid-cols-6 auto-rows-[140px] mt-4">
-            {pokemons.map((pokemon) => (
-              <PokemonCard 
-                key={pokemon.id} 
-                pokemon={pokemon} 
-            />
-          ))}
-          </div>
+        return (
+            <main className="min-h-screen bg-zinc-50 dark:bg-black flex flex-col items-center justify-center px-6 text-center">
+                <div className="max-w-4xl mx-auto space-y-6">
+                    <h1 className="text-5xl md:text-7xl font-extrabold text-black dark:text-white tracking-tight">
+                        Pokémon Slate
+                    </h1>
+                    <p>Your Ultimate Pokedex Monitor.</p>
+                    <p>Keep track of every single Pokémon you attain throughout your journey as a Pokémon Master.</p>
+            
+            <div>
+                <form method="post" className="flex flex-row gap-2">
+                    <label htmlFor="email">EMAIL:</label>
+                    <input id="email" name="email" type="email" required /> 
+                    <label htmlFor="password">PASSWORD:</label>
+                    <input id="password" name="password" type="password" required />
+                    <button formAction={login}>SIGN IN</button>
+                    <button formAction={signup}>SIGN UP</button>
+                </form>
+            </div>
         </div>
-      </div>
-    </div>
-  )
+    </main>
+    )
 }

@@ -7,7 +7,7 @@ export default function RegionFilter({ currentRegion }: { currentRegion?: string
     const pathname = usePathname()
     const searchParams = useSearchParams()
 
-    const activeRegion = currentRegion || 'national'
+    const activeRegion = currentRegion || 'kanto'
 
     const handleClick = (region: string | null) => {
         const params = new URLSearchParams(searchParams.toString())
