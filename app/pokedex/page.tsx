@@ -5,7 +5,7 @@ import { type User } from '@supabase/supabase-js'
 import { createClient } from '@/lib/supabase/server'
 
 export default async function Pokedex({ user, searchParams }: { user: User; searchParams: { region?: string } }) {  
-  const params = await searchParams || 'kanto';
+  const region = (await searchParams).region || 'kanto'  
   const supabase = await createClient()
   const { data: { user: currentUser } } = await supabase.auth.getUser()
   
@@ -14,33 +14,33 @@ export default async function Pokedex({ user, searchParams }: { user: User; sear
   let start = 1
   let end = 1025
 
-  if (params.region === 'national') {
+  if (region === 'national') {
     end = 1025
-  } else if (params.region === 'kanto') {
+  } else if (region === 'kanto') {
     start = 1;
     end = 151;
-  } else if (params.region === 'johto') {
+  } else if (region === 'johto') {
     start = 152;
     end = 251;
-  } else if (params.region === 'hoenn') {
+  } else if (region === 'hoenn') {
     start = 252;
     end = 386;
-  } else if (params.region === 'sinnoh') {
+  } else if (region === 'sinnoh') {
     start = 387;
     end = 493;
-  } else if (params.region === 'unova') {
+  } else if (region === 'unova') {
     start = 494;
     end = 649;
-  } else if (params.region === 'kalos') {
+  } else if (region === 'kalos') {
     start = 650;
     end = 721;
-  } else if (params.region === 'alola') {
+  } else if (region === 'alola') {
     start = 722;
     end = 809;
-  } else if (params.region === 'galar') {
+  } else if (region === 'galar') {
     start = 810;
     end = 905;
-  } else if (params.region === 'paldea') {
+  } else if (region === 'paldea') {
     start = 906;
     end = 1025;
   }
@@ -87,7 +87,7 @@ export default async function Pokedex({ user, searchParams }: { user: User; sear
         </h2>
 
         <div className="text-left w-full max-w-5xl">
-          <RegionFilter currentRegion={params.region} />
+          <RegionFilter currentRegion={region} />
 
           <div className="grid grid-cols-6 auto-rows-[140px] mt-4">
             {pokemons.map((pokemon) => (
