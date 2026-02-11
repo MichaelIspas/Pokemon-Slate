@@ -48,12 +48,6 @@ export default function AccountForm({ user }: { user: User | null }) {
                         Sign out
                     </button>
                 </form>
-
-                <form action="/" method="post">
-                    <button type="submit" className="w-32 py-3 bg-blue-800 text-white rounded hover:bg-blue-700 mt-4">
-                        Home
-                    </button>
-                </form>
             </div>
         </div>
     </div>

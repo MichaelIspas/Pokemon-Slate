@@ -78,15 +78,15 @@ export default async function Pokedex({ user, searchParams }: { user: User; sear
         </h1>
         <h2>
           <p>
-            <Link href="/">
+            <Link href="/account">
               <button className="inline-block py-1 px-5 bg-yellow-600 text-white rounded hover:bg-yellow-700 text-3xl md:text-1xl font-bold tracking-tight">                
-                Home
+                Account
               </button>
             </Link>
           </p>
         </h2>
 
-        <div className="text-left w-full max-w-5xl">
+        <div className="text-left w-auto max-w-5xl">
           <RegionFilter currentRegion={region} />
 
           <div className="grid grid-cols-6 auto-rows-[140px] mt-4">
