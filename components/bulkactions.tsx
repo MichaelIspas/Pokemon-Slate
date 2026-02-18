@@ -37,6 +37,7 @@ export default function BulkActions({ currentRegion, pokemons, currentUser }: Bu
                 console.error('Select All failed:', err)
             } finally {
                 setIsBulkLoading(false)
+                location.reload()
             }
         }
 
@@ -63,6 +64,7 @@ export default function BulkActions({ currentRegion, pokemons, currentUser }: Bu
                 console.error('Select None failed:', err)
             } finally {
                 setIsBulkLoading(false)
+                location.reload()
             }
         }
 
