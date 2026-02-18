@@ -7,7 +7,7 @@ import { useState } from 'react'
 interface BulkActionsProps {
     currentRegion: string
     pokemons: any[]
-    currentUser: User | null
+    currentUser: User
 }
 
 export default function BulkActions({ currentRegion, pokemons, currentUser }: BulkActionsProps) {
