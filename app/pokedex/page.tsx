@@ -3,6 +3,7 @@ import RegionFilter from '@/components/regionfilter'
 import Link from 'next/link'
 import { type User } from '@supabase/supabase-js'
 import { createClient } from '@/lib/supabase/server'
+import BulkActions from '@/components/bulkactions'
 
 export default async function Pokedex({ user, searchParams }: { user: User; searchParams: { region?: string } }) {  
   const region = (await searchParams).region || 'kanto'  
@@ -70,37 +71,42 @@ export default async function Pokedex({ user, searchParams }: { user: User; sear
   }
 
   if (currentUser) {
-  return (
-    <div className="min-h-screen bg-zinc-50 dark:bg-black flex flex-col items-center pt-16 px-4">
-      <div className="text-left w-full max-w-5xl">
-        <h1 className="text-5xl font-bold text-black dark:text-white md:text-6xl">
-          Pokémon Slate
-        </h1>
-        <h2>
-          <p>
-            <Link href="/account">
-              <button className="inline-block py-1 px-5 bg-yellow-600 text-white rounded hover:bg-yellow-700 text-3xl md:text-1xl font-bold tracking-tight">                
-                Account
-              </button>
-            </Link>
-          </p>
-        </h2>
+    return (
+      <div className="min-h-screen bg-zinc-50 dark:bg-black flex flex-col items-center pt-16 px-4">
+        <div className="text-left w-full max-w-5xl">
+          <h1>
+            <p>
+              <Link href="/account">
+                <button className="inline-block py-1 px-5 bg-yellow-600 text-white rounded hover:bg-yellow-700 text-3xl md:text-1xl font-bold tracking-tight">
+                  Account
+                </button>
+              </Link>
+            </p>
+          </h1>
 
-        <div className="text-left w-auto max-w-5xl">
-          <RegionFilter currentRegion={region} />
+          <div className="text-left w-auto max-w-5xl">            
+            <RegionFilter currentRegion={region} 
+            />
+            
+            <BulkActions
+              currentRegion={region}
+              pokemons={pokemons}
+              currentUser={currentUser}
+            />
 
-          <div className="grid grid-cols-6 auto-rows-[140px] mt-4">
+          {/* Card grid */}
+            <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-6 auto-rows-[140px] mt-4 gap-4 mx-auto">
             {pokemons.map((pokemon) => (
-              <PokemonCard 
-                key={pokemon.id} 
+              <PokemonCard
+                key={pokemon.id}
                 pokemon={pokemon}
                 user={currentUser}
-            />
-          ))}
+              />
+            ))}
           </div>
         </div>
       </div>
-    </div>
-  )
-}
+      </div>
+      )
+    }
 }
