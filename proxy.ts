@@ -1,11 +1,12 @@
-import { NextResponse } from 'next/server';
-import type { NextRequest } from 'next/server';
+import { NextRequest, NextResponse } from 'next/server';
 
-export function middleware(request: NextRequest) {
+// 1. REMOVE this block:
+// export const config = {
+//   runtime: 'edge',
+// };
+
+// 2. ENSURE you have a proper function export named 'proxy' or as a default export:
+export function proxy(request: NextRequest) {
+  // Your proxy logic here
   return NextResponse.next();
 }
-
-// ADD THIS EXACT BLOCK BELOW YOUR MIDDLEWARE FUNCTION:
-export const config = {
-  runtime: 'edge',
-};
