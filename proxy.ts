@@ -1,6 +1,11 @@
-import { createClient } from '@supabase/supabase-js'
+import { NextRequest, NextResponse } from 'next/server';
 
-const supabaseUrl = process.env.NEXT_PUBLIC_SUPABASE_URL!
-const supabaseAnonKey = process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY!
+export function proxy(request: NextRequest) {
+  // Your proxy or middleware logic here
+  return NextResponse.next();
+}
 
-export const supabase = createClient(supabaseUrl, supabaseAnonKey)
+// Optional: Keep your matcher config if you use one
+export const config = {
+  matcher: '/api/:path*',
+};
