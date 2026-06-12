@@ -1,11 +1,11 @@
-import { NextRequest, NextResponse } from 'next/server';
+import { NextResponse } from 'next/server';
+import type { NextRequest } from 'next/server';
 
-export function proxy(request: NextRequest) {
-  // Your proxy or middleware logic here
+export function middleware(request: NextRequest) {
   return NextResponse.next();
 }
 
-// Optional: Keep your matcher config if you use one
+// ADD THIS EXACT BLOCK BELOW YOUR MIDDLEWARE FUNCTION:
 export const config = {
-  matcher: '/api/:path*',
+  runtime: 'edge',
 };
