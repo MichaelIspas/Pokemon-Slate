@@ -1,15 +1,15 @@
-// File path: ./proxy.ts (or ./src/proxy.ts if using a src directory)
+// File path: ./middleware.ts (or ./src/middleware.ts)
 import { type NextRequest } from 'next/server'
 import { updateSession } from '@/lib/supabase/proxy'
 
-export async function proxy(request: NextRequest) {
+export async function middleware(request: NextRequest) {
     // update user's auth session
     return await updateSession(request)
 }
 
 export const config = {
-    // Satisfies the Next.js v16 build constraint for Cloudflare Pages
-    runtime: 'experimental-edge', 
+    // Standard runtime configuration for Next.js + Cloudflare
+    runtime: 'edge', 
     
     matcher: [
         /*
