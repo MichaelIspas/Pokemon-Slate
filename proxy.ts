@@ -5,11 +5,7 @@ import { updateSession } from '@/lib/supabase/proxy'
 export async function proxy(request: NextRequest) {
     // update user's auth session
     return await updateSession(request)
-}
-
-export const config = {
-    // Satisfies Next.js v16's rendering constraints on Cloudflare Pages
-    runtime: 'experimental-edge', 
+} 
     
     matcher: [
         /*
